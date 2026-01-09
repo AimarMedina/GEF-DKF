@@ -4781,11 +4781,14 @@ textarea.form-control-lg {
   --bs-alert-border-radius: var(--bs-border-radius);
   --bs-alert-link-color: inherit;
   position: relative;
-  padding: var(--bs-alert-padding-y) var(--bs-alert-padding-x);
-  margin-bottom: var(--bs-alert-margin-bottom);
+  padding: 7px;
+  margin-bottom: 5px;
   color: var(--bs-alert-color);
   background-color: var(--bs-alert-bg);
   border: var(--bs-alert-border);
+  font-size: 12px;
+  text-align: center;
+  display: inline-block;
   border-radius: var(--bs-alert-border-radius);
 }
 
