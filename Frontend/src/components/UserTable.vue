@@ -65,7 +65,7 @@ async function fetchUsers(page = 1) {
     });
 
     users.value = response.data.data.data ||[];
-    totalPages.value = response.data.last_page;
+    totalPages.value = response.data.data.last_page;
   } catch (error) {
     console.error(error);
   }
