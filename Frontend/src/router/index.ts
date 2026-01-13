@@ -22,31 +22,27 @@ const router = createRouter({
       name: 'users',
       component: UsersView,
     },
+    
   ],
 })
 
 router.beforeEach(async (to, from, next) => {
   const userStore = useUserStore()
-  const token = localStorage.getItem('token')
 
-  if (token && !userStore.user && !userStore.loading) {
-    await userStore.getUser()
-  }
-
-  const isAuthenticated = !!token
-
-  const publicPages = ['/']
-  const authRequired = !publicPages.includes(to.path)
-
-  if (authRequired && !isAuthenticated) {
+  const userAuth = await userStore.getUser()
+  const isAdmin = userStore.user?.tipo == 'admin';
+  if (!userAuth && to.path !== '/') {
     return next('/')
   }
 
-  if (to.path === '/' && isAuthenticated) {
+  if (userAuth && to.path === '/' || !isAdmin && to.path == '/users') {
     return next('/home')
   }
 
+    console.log()
   next()
 })
+
+
 
 export default router
