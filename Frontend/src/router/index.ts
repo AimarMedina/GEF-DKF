@@ -22,6 +22,7 @@ const router = createRouter({
       name: 'users',
       component: UsersView,
     },
+    
   ],
 })
 
