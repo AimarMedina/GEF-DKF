@@ -7,6 +7,7 @@ import AlumnosView from '@/views/AlumnosView.vue'
 import AlumnosTutorView from '../views/tutor/AlumnosTutorView.vue'
 import SeguimientoView from '@/views/tutor/SeguimientoView.vue'
 import AsignarEmpresaView from '@/views/tutor/AsignarEmpresaView.vue'
+import EmpresaView from '../views/admin/EmpresaView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -43,6 +44,12 @@ const router = createRouter({
       component: AsignarEmpresaView
     }
     
+    {
+      path: '/empresa',
+      name: 'empresa',
+      component: EmpresaView,
+    },
+
   ],
 })
 
