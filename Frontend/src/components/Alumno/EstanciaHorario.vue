@@ -50,7 +50,7 @@ const horariosPorDia = computed(() => {
         @mouseleave="hover = false"
       >
         <!-- Header -->
-        <div class="card-header bg-primary text-white fw-bold">
+        <div class="card-header bg-indigo text-white fw-bold">
           {{ diasCompletos[dia] }}
         </div>
 
