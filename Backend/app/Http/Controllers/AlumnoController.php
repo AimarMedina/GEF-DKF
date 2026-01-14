@@ -18,11 +18,11 @@ class AlumnoController extends Controller
             ->with([
                 'usuario:id,nombre,apellidos,email,tipo',
                 'grado:id,nombre',
-                'estanciaAlumno:id,ID_Alumno'
+                'estanciaActual:id,ID_Alumno'
             ])
             ->paginate($perPage);
 
-        
+
         $alumnos->getCollection()->transform(function ($a) {
             return [
                'ID_Usuario' => $a->ID_Usuario,
@@ -54,7 +54,7 @@ class AlumnoController extends Controller
             ->with([
                 'usuario:id,nombre,apellidos,email,tipo',
                 'grado:id,nombre',
-                'estanciaAlumno:id,ID_Alumno'
+                'estanciaActual:id,ID_Alumno'
             ])
             ->paginate($perPage);
 

@@ -2,6 +2,7 @@
 <?php
 
 use App\Http\Controllers\EmpresaController;
+use App\Http\Controllers\GradoController;
 use App\Http\Controllers\InstructorController;
 use App\Http\Controllers\AlumnoController;
 use App\Http\Controllers\EstanciaController;
@@ -24,3 +25,4 @@ Route::get('/alumno/{id}/estancia', [EstanciaController::class, 'getEstanciaActu
 Route::get('/empresa/{cif}/alumnos', [EstanciaController::class, 'getCompanyAlumnos']);
  Route::get('/alumnos/{idAlumno}/notas', [NotasEmpresaController::class, 'show'])->middleware('auth:sanctum');
  Route::post('/alumnos/{idAlumno}/notas', [NotasEmpresaController::class, 'store'])->middleware('auth:sanctum');
+Route::get('/grados',[GradoController::class,'getGrados']);
