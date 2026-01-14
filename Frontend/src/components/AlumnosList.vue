@@ -7,6 +7,7 @@ import Navbar from "../components/Navbar.vue";
 const props = defineProps({
   endpoint: { type: String, required: true }, // URL completa
   title: { type: String, default: "Alumnos" },
+  actions: {},
 });
 
 const alumnos = ref([]); // por defecto array vacío de alumnos
@@ -18,7 +19,7 @@ const perPage = ref(5); //por defecto 5 alumnos por página
 async function fetchAlumnos(page = 1) {
   //si nos meten una página menor que uno redirigimos a la primera
   if (page < 1) page = 1;
-  
+
   //actualizamos la página en la que estamos
   currentPage.value = page;
 
@@ -37,7 +38,6 @@ async function fetchAlumnos(page = 1) {
 
 //Cuando el componente se cargue se va a la primera pagina
 onMounted(() => fetchAlumnos(1));
-
 </script>
 
 <template>
@@ -54,6 +54,7 @@ onMounted(() => fetchAlumnos(1));
           <th>Apellidos</th>
           <th>Email</th>
           <th>Grado</th>
+          <th>Acciones</th>
         </tr>
       </thead>
 
@@ -64,10 +65,15 @@ onMounted(() => fetchAlumnos(1));
           <td>{{ a.Apellidos }}</td>
           <td>{{ a.Email }}</td>
           <td>{{ a.Grado }}</td>
+          <td>
+            <slot name="actions" :alumno="a">
+              <span class="text-muted">-</span>
+            </slot>
+          </td>
         </tr>
 
         <tr v-if="alumnos.length === 0">
-          <td colspan="5" class="text-center py-3">No hay alumnos</td>
+          <td colspan="6" class="text-center py-3">No hay alumnos</td>
         </tr>
       </tbody>
     </table>
