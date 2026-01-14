@@ -7,6 +7,8 @@ use App\Http\Controllers\InstructorController;
 use App\Http\Controllers\AlumnoController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
+use App\Models\EstanciaAlumno;
+
 Route::get('/auth', [UserController::class, 'auth'])->middleware('auth:sanctum');
 
 Route::post('/login', [UserController::class, 'login']);
