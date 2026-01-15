@@ -38,19 +38,19 @@ const horariosPorDia = computed(() => {
 </script>
 
 <template>
-  <div v-if="Object.keys(horariosPorDia).length" class="mt-4">
+  <div v-if="Object.keys(horariosPorDia).length" class="mt-4 col-12 col-lg-5">
     <h5 class="mb-4 fw-bold">Mi Horario</h5>
     <div class="d-flex flex-wrap gap-3">
       <div
         v-for="(horas, dia) in horariosPorDia"
         :key="dia"
         class="card text-center flex-grow-0 shadow-sm"
-        style="min-width: 150px; border-radius: 0.75rem; transition: transform 0.2s;"
+        style="min-width: 150px;"
         @mouseover="hover = true"
         @mouseleave="hover = false"
       >
         <!-- Header -->
-        <div class="card-header bg-primary text-white fw-bold">
+        <div class="card-header bg-indigo text-white fw-bold">
           {{ diasCompletos[dia] }}
         </div>
 
@@ -75,8 +75,5 @@ const horariosPorDia = computed(() => {
 </template>
 
 <style scoped>
-.card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 16px rgba(0,0,0,0.15);
-}
+
 </style>

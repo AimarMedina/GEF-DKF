@@ -9,8 +9,12 @@ import SeguimientoView from '@/views/tutor/SeguimientoView.vue'
 import AsignarEmpresaView from '@/views/tutor/AsignarEmpresaView.vue'
 import EmpresaView from '../views/admin/EmpresaView.vue'
 import EstanciaAlumnoView from '../views/alumno/EstanciaAlumnoView.vue'
+
 import AlumnoCuadernosView from '@/views/cuadernos/AlumnoCuadernosView.vue';
 import TutorCuadernosView from '@/views/cuadernos/TutorCuadernosView.vue';
+
+import NotasAlumnoView from '@/views/alumno/NotasAlumnoView.vue'
+
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -72,6 +76,13 @@ const router = createRouter({
       name: 'tutor-cuadernos',
       component: TutorCuadernosView
     },
+    {
+      path: "/instructor/alumnos/:idAlumno/notas",
+      name: "instructor-alumno-notas",
+      component: NotasAlumnoView ,
+      meta: { requiresAuth: true }
+    }
+    
 
 
   ],
