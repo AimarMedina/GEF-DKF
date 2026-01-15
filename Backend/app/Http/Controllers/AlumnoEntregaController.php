@@ -8,27 +8,32 @@ use Illuminate\Http\Request;
 class AlumnoEntregaController extends Controller
 {
     public function entregarCuaderno(Request $request, $id)
-    {
-        // Si recibes archivo PDF desde un form-data
-        $urlCuaderno = $request->URL_Cuaderno;
+{
+    $urlCuaderno = null;
 
-        //Para subir archivo real:
-        if($request->hasFile('cuaderno')){
-            $path = $request->file('cuaderno')->store('cuadernos', 'public');
-            $urlCuaderno = asset('storage/'.$path);
-        }
+    if ($request->hasFile('cuaderno')) {
+        $archivo = $request->file('cuaderno');
+        $nombreOriginal = $archivo->getClientOriginalName();
 
-        return AlumnoEntrega::updateOrCreate(
-            [
-                'ID_Alumno' => $id,
-                'ID_Entrega' => $request->ID_Entrega
-            ],
-            [
-                'URL_Cuaderno' => $urlCuaderno,
-                'Fecha_Entrega' => now()
-            ]
-        );
+        $nombreFinal = time() . '_' . $nombreOriginal;
+
+        $path = $archivo->storeAs('cuadernos', $nombreFinal, 'public');
+
+        $urlCuaderno = asset('storage/' . $path);
     }
+
+    return AlumnoEntrega::updateOrCreate(
+        [
+            'ID_Alumno' => $id,
+            'ID_Entrega' => $request->ID_Entrega
+        ],
+        [
+            'URL_Cuaderno' => $urlCuaderno,
+            'Fecha_Entrega' => now()
+        ]
+    );
+}
+
     public function descargarCuaderno($id)
 {
     $entrega = AlumnoEntrega::findOrFail($id);

@@ -1,5 +1,5 @@
 <script setup>
-import { ref, watch, defineProps, defineEmits } from 'vue'
+import { ref, watch } from 'vue'
 
 const props = defineProps({
   show: Boolean,
@@ -36,7 +36,7 @@ function resetFormulario() {
 </script>
 
 <template>
-  <div v-if="show" class="modal d-block fade show">
+  <div v-if="show" class="modal fade show d-block">
     <div class="modal-dialog">
       <div class="modal-content">
 
@@ -48,23 +48,23 @@ function resetFormulario() {
         <div class="modal-body">
           <div class="mb-2">
             <label>Nombre</label>
-            <input v-model="nuevaEmpresa.Nombre" type="text" class="form-control" />
+            <input v-model="nuevaEmpresa.Nombre" type="text" class="form-control">
           </div>
           <div class="mb-2">
             <label>Dirección</label>
-            <input v-model="nuevaEmpresa.Direccion" type="text" class="form-control" />
+            <input v-model="nuevaEmpresa.Direccion" type="text" class="form-control">
           </div>
           <div class="mb-2">
             <label>CIF</label>
-            <input v-model="nuevaEmpresa.CIF" type="text" class="form-control" />
-          </div>
-          <div class="mb-2">
-            <label>Email</label>
-            <input v-model="nuevaEmpresa.Email" type="email" class="form-control" />
+            <input v-model="nuevaEmpresa.CIF" type="text" class="form-control">
           </div>
           <div class="mb-2">
             <label>Teléfono</label>
-            <input v-model="nuevaEmpresa.N_Tel" type="text" class="form-control" />
+            <input v-model="nuevaEmpresa.N_Tel" type="text" class="form-control">
+          </div>
+          <div class="mb-2">
+            <label>Email</label>
+            <input v-model="nuevaEmpresa.Email" type="email" class="form-control">
           </div>
 
           <div v-if="errorMessage" class="alert alert-danger text-start">
@@ -76,7 +76,7 @@ function resetFormulario() {
 
         <div class="modal-footer">
           <button class="btn btn-secondary" @click="$emit('close')">Cancelar</button>
-          <button class="btn btn-indigo" @click="crear">Crear</button>
+          <button class="btn btn-indigo" @click="crear">Guardar</button>
         </div>
 
       </div>
