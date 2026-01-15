@@ -1,4 +1,3 @@
-
 <?php
 
 use App\Http\Controllers\EmpresaController;
@@ -33,6 +32,7 @@ Route::post('/entregas', [EntregaCuadernoController::class, 'crearEntregaCuadern
 Route::get('/grado/{id}/entregas', [EntregaCuadernoController::class, 'porGrado']);
 Route::post('/alumno/entrega', [AlumnoEntregaController::class, 'entregarCuaderno']);
 Route::post('/nota-cuaderno', [NotaCuadernoController::class, 'notaCuaderno']);
+
 
 
 Route::get('/alumnos/{idAlumno}/notas', [NotasEmpresaController::class, 'show'])->middleware('auth:sanctum');
