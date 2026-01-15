@@ -44,7 +44,8 @@ async function guardarNota(alumnoEntrega) {
   try {
     await axios.post('http://localhost:8000/api/nota-cuaderno', {
       ID_Cuaderno: alumnoEntrega.ID_Entrega,
-      Nota: alumnoEntrega.nota?.Nota || 0
+      Nota: alumnoEntrega.nota?.Nota || 0,
+      ID_Tutor: tutorId
     })
     alert('Nota guardada correctamente')
   } catch (err) {

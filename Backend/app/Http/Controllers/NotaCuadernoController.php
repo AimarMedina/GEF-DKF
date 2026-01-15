@@ -12,18 +12,20 @@ class NotaCuadernoController extends Controller
     {
         $request->validate([
             'ID_Cuaderno' => 'required',
-            'Nota' => 'required|numeric|min:0|max:10'
+            'Nota' => 'required|numeric|min:0|max:10',
+            'ID_Tutor' => 'required'
         ]);
 
         NotaCuaderno::updateOrCreate(
             ['ID_Cuaderno' => $request->ID_Cuaderno],
             [
                 'Nota' => $request->Nota,
-                'Fecha' => now()
+                'Fecha' => now(),
+                'ID_Tutor' => $request->ID_Tutor
             ]
         );
 
         return response()->json(['message' => 'Nota guardada']);
     }
-      
+
 }
