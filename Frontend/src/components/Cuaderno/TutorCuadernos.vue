@@ -25,7 +25,7 @@ async function fetchEntregas() {
       const res = resResponse.data
 
       // Mapear alumno_entrega a alumnoEntrega
-      res.forEach(function(e) {
+      res.forEach(function (e) {
         e.alumnoEntrega = e.alumno_entrega || []
         e.alumnoEntrega.forEach(a => {
           if (!a.nota) a.nota = { Nota: 0 }
@@ -64,49 +64,80 @@ onMounted(fetchEntregas)
 
     <div v-if="entregas.length">
       <div v-for="entrega in entregas" :key="entrega.id" class="card mb-4 shadow-sm">
-        <div class="card-header d-flex justify-content-between align-items-center">
+
+        <!-- HEADER -->
+        <div class="card-header bg-indigo d-flex justify-content-between align-items-center">
           <div>
-            <strong>Entrega ID: {{ entrega.id }}</strong>
-            <span class="text-muted ms-3">Fecha límite: {{ entrega.Fecha_Limite }}</span>
+            <h5 class="text-white mb-1">
+              {{ entrega.Descripcion }}
+            </h5>
+            <small class="text-white">
+              Fecha límite: {{ entrega.Fecha_Limite }}
+            </small>
           </div>
-          <div>
-            <span class="badge bg-success" v-if="entrega.alumnoEntrega.length">Entregas realizadas: {{ entrega.alumnoEntrega.length }}</span>
-            <span class="badge bg-danger" v-else>No hay entregas</span>
-          </div>
+
+          <span class="badge" :class="entrega.alumnoEntrega.length ? 'bg-success' : 'bg-danger'">
+            {{ entrega.alumnoEntrega.length
+              ? `Entregas: ${entrega.alumnoEntrega.length}`
+              : 'Sin entregas' }}
+          </span>
         </div>
 
-        <div class="card-body p-0">
-          <table class="table table-striped mb-0">
-            <thead class="table-light">
-              <tr>
-                <th>Alumno</th>
-                <th>PDF</th>
-                <th>Nota</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="alumnoEntrega in entrega.alumnoEntrega" :key="alumnoEntrega.id">
-                <td>{{ alumnoEntrega.alumno?.usuario?.nombre ?? '—' }}</td>
-                <td>
-                  <a v-if="alumnoEntrega.URL_Cuaderno" :href="`http://localhost:8000/api/alumno/entregas/descargar/${alumnoEntrega.id}`" target="_blank">
-                    Descargar PDF
-                  </a>
-                  <span v-else class="text-danger">No entregado</span>
-                </td>
-                <td class="d-flex align-items-center gap-2">
-                  <input v-model.number="alumnoEntrega.nota.Nota" type="number" min="0" max="10" class="form-control form-control-sm w-25" />
-                  <button @click="guardarNota(alumnoEntrega)" class="btn btn-success btn-sm">Guardar</button>
-                </td>
-              </tr>
+        <!-- DESCRIPCIÓN -->
+        <div class="card-body pb-2">
 
-              <!-- Si no hay alumnos entregados -->
-              <tr v-if="entrega.alumnoEntrega.length === 0">
-                <td colspan="3" class="text-center text-muted">Ningún alumno ha entregado este cuaderno</td>
-              </tr>
-            </tbody>
-          </table>
+
+          <!-- TABLA -->
+          <div class="table-responsive">
+            <table class="table table-striped mb-0 align-middle">
+              <thead class="table-light">
+                <tr>
+                  <th>Alumno</th>
+                  <th>PDF</th>
+                  <th class="text-center">Nota</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                <tr v-for="alumnoEntrega in entrega.alumnoEntrega" :key="alumnoEntrega.id">
+                  <td>
+                    {{ alumnoEntrega.alumno?.usuario?.nombre ?? '—' }}
+                  </td>
+
+                  <td>
+                    <a v-if="alumnoEntrega.URL_Cuaderno"
+                      :href="`http://localhost:8000/api/alumno/entregas/descargar/${alumnoEntrega.id}`" target="_blank"
+                      class="link-primary">
+                      Descargar PDF
+                    </a>
+                    <span v-else class="text-danger">
+                      No entregado
+                    </span>
+                  </td>
+
+                  <td class="text-center">
+                    <div class="d-flex justify-content-center gap-2">
+                      <input v-model.number="alumnoEntrega.nota.Nota" type="number" min="0" max="10"
+                        class="form-control form-control-sm w-50" />
+                      <button @click="guardarNota(alumnoEntrega)" class="btn btn-outline-secondary btn-sm">
+                        Guardar
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+
+                <!-- SIN ENTREGAS -->
+                <tr v-if="entrega.alumnoEntrega.length === 0">
+                  <td colspan="3" class="text-center text-muted py-3">
+                    Ningún alumno ha entregado este cuaderno
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
+
     </div>
 
     <div v-else class="text-center text-muted mt-3">
@@ -114,4 +145,3 @@ onMounted(fetchEntregas)
     </div>
   </div>
 </template>
-

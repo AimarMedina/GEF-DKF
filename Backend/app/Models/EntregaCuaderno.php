@@ -7,11 +7,12 @@ use Illuminate\Database\Eloquent\Model;
 class EntregaCuaderno extends Model
 {
     protected $table = 'entrega_cuaderno';
-    
+
     protected $fillable = [
         'Fecha_creacion',
         'Fecha_Limite',
-        'ID_Grado'
+        'ID_Grado',
+        'Descripcion'
     ];
 
     public function alumnoEntrega(){
@@ -22,6 +23,6 @@ class EntregaCuaderno extends Model
         return $this->belongsTo(Grado::class, 'ID_Grado');
     }
 
-    
+
 
 }

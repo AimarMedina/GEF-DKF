@@ -37,7 +37,7 @@ const pendientes = computed(() => props.entregas.filter(e => !e.alumno_entrega.f
             </span>
           </td>
           <td class="text-center text-md-start">
-            <a :href="`http://localhost:8000/api/alumno/entregas/descargar/${c.pivot.ID}`" target="_blank" class="btn btn-outline-primary btn-sm">
+            <a :href="`http://localhost:8000/api/alumno/entregas/descargar/${c.pivot.ID}`" target="_blank" class="btn btn-outline-indigo btn-sm">
               <i class="bi bi-download"></i> Descargar
             </a>
           </td>
