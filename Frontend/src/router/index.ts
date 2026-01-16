@@ -14,7 +14,7 @@ import AlumnoCuadernosView from '@/views/cuadernos/AlumnoCuadernosView.vue';
 import TutorCuadernosView from '@/views/cuadernos/TutorCuadernosView.vue';
 
 import NotasAlumnoView from '@/views/alumno/NotasAlumnoView.vue'
-
+import AlumnoNotasView from '@/views/alumno/AlumnoNotasView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -80,6 +80,12 @@ const router = createRouter({
       path: "/instructor/alumnos/:idAlumno/notas",
       name: "instructor-alumno-notas",
       component: NotasAlumnoView ,
+      meta: { requiresAuth: true }
+    },
+    {
+      path: '/alumno/mis-notas',
+      name: "alumno-notas",
+      component: AlumnoNotasView ,
       meta: { requiresAuth: true }
     }
     

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\NotaCuaderno;
 use App\Models\Alumno;
 use Illuminate\Http\Request;
 
@@ -98,35 +99,32 @@ class AlumnoController extends Controller
 
     public function misNotas($id)
     {
+        
+
+        if (!$id) {
+            return response()->json([
+                'alumno' => null,
+                'cuadernos' => [],
+                'competencias' => [],
+                'transversales' => [],
+                'egibide' => [],
+            ]);
+        }
+
         $alumno = Alumno::with([
             'usuario:id,nombre,apellidos',
             'grado:id,nombre',
             'notasCompetencias.competencia',
             'notasTransversales.transversal',
             'notasEgibide.asignatura',
-            'entregas'
-        ])->findOrFail($id);
+            'entregas.alumnoEntrega.nota'
+        ])->where('ID_Usuario',$id)->get();
 
-        // Cargamos las notas de cuaderno manualmente
-        $alumno->entregas->each(function ($entrega) {
-            $entrega->nota = \App\Models\NotaCuaderno::where(
-                'ID_Cuaderno',
-                $entrega->pivot->ID
-            )->first();
-        });
-
-        return response()->json([
-            'alumno' => [
-                'nombre' => $alumno->usuario->nombre,
-                'apellidos' => $alumno->usuario->apellidos,
-                'grado' => $alumno->grado->nombre,
-            ],
-            'cuadernos' => $alumno->entregas,
-            'competencias' => $alumno->notasCompetencias,
-            'transversales' => $alumno->notasTransversales,
-            'egibide' => $alumno->notasEgibide,
-        ]);
+        return response()->json($alumno);
     }
+
+
+
 
 
 

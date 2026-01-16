@@ -47,8 +47,7 @@ Route::post('/empresa/instructor/create', [InstructorController::class, 'crearIn
 */
 Route::get('/tutores/{id}/alumnos', [AlumnoController::class, 'alumnosDeTutor']);
 Route::get('/instructores/{id}/alumnos', [AlumnoController::class, 'alumnosDeInstructor']);
-<<<<<<< Updated upstream
-=======
+
 Route::get('/tutor/alumno/{id}/estancias', [EstanciaController::class, 'historialEstanciasAlumno']);// Tutor
 Route::get('/alumno/{id}/estancia', [EstanciaController::class, 'getEstanciaActual']);// Alumno
 Route::get('/empresa/{cif}/alumnos', [EstanciaController::class, 'getCompanyAlumnos']);
@@ -67,7 +66,7 @@ Route::get('/alumno/entregas/descargar/{id}', [AlumnoEntregaController::class, '
 
 Route::get('/alumnos/{idAlumno}/notas', [NotasEmpresaController::class, 'misNotas'])->middleware('auth:sanctum');
 Route::post('/alumnos/{idAlumno}/notas', [NotasEmpresaController::class, 'store'])->middleware('auth:sanctum');
->>>>>>> Stashed changes
+
 Route::get('/tutor/{id}/grados', [TutorController::class, 'grados']);
 
 /*
@@ -86,6 +85,7 @@ Route::get('/empresa/{cif}/alumnos', [EstanciaController::class, 'getCompanyAlum
 | Cuadernos y Entregas
 |--------------------------------------------------------------------------
 */
+
 // Obtener grado del alumno
 Route::get('/alumno/{id}', [AlumnoController::class, 'getGrado']);
 // Entregas de un alumno
@@ -104,6 +104,8 @@ Route::get('/alumno/entregas/descargar/{id}', [AlumnoEntregaController::class, '
 | Notas
 |--------------------------------------------------------------------------
 */
+// Notas de alumno
+Route::get('/alumno/{id}/mis-notas', [AlumnoController::class, 'misNotas']);
 Route::post('/nota-cuaderno', [NotaCuadernoController::class, 'notaCuaderno']);
 // Notas por alumno (empresa)
 Route::get('/alumnos/{idAlumno}/notas', [NotasEmpresaController::class, 'show'])->middleware('auth:sanctum');
