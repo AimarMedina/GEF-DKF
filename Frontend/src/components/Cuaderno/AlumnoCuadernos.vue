@@ -74,8 +74,7 @@ onMounted(fetchEntregas)
 
 <template>
   <div>
-    <h3 class="mb-4">Mis Cuadernos</h3>
-
+  
     <div v-if="mensaje" class="alert alert-danger">
       {{ mensaje }}
     </div>
