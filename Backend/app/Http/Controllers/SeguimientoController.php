@@ -22,7 +22,7 @@ class SeguimientoController extends Controller
 
         $seguimientos = $seguimientos->map(function($s){
             return [
-                'ID' => $s->ID,
+                'id' => $s->id,
                 'ID_Estancia' => $s->ID_Estancia,
                 'Fecha' => $s->Fecha,
                 'Hora' => $s->Hora,
@@ -67,11 +67,22 @@ class SeguimientoController extends Controller
         return response()->json($seguimiento);
     }
 
-    // Eliminar seguimiento
     public function eliminarSeguimiento($id)
-    {
-        $seguimiento = Seguimiento::findOrFail($id);
-        $seguimiento->delete();
-        return response()->json(['message'=>'Seguimiento eliminado']);
+{
+    $seguimiento = Seguimiento::find($id);
+
+    if (!$seguimiento) {
+        return response()->json([
+            'message' => 'Seguimiento no encontrado'
+        ], 404);
     }
+
+    $seguimiento->delete();
+
+    return response()->json([
+        'message' => 'Seguimiento eliminado',
+        'seguimientio' => $seguimiento
+    ], 200);
+}
+
 }

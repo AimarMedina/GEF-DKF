@@ -134,7 +134,7 @@ Route::get('/tutor/{id}/notas-cuaderno', [NotaCuadernoController::class, 'notasP
 Route::get('/estancia/{id}/seguimientos', [SeguimientoController::class, 'index']);
 Route::post('/seguimiento', [SeguimientoController::class,'crearSeguimiento']);
 Route::put('/seguimiento/{id}', [SeguimientoController::class,'ModificarSeguimiento']);
-Route::delete('/seguimiento/{id}', [SeguimientoController::class,'eliminarSeguimiento']);
+Route::delete('/seguimiento/{id}', [SeguimientoController::class,'eliminarSeguimiento'])->middleware('auth:sanctum');
 
 
 Route::get('/grado/{id}/matriz-competencias/', [MatrizController::class, 'getCompRa']);

@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 class Seguimiento extends Model
 {
     protected $table = 'Seguimiento';
-    protected $primaryKey = 'ID';
 
     protected $fillable = [
         'ID_Estancia',
@@ -18,6 +17,6 @@ class Seguimiento extends Model
     ];
 
     public function estancia(){
-        return $this->belongsTo(EstanciaAlumno::class, 'ID_Estancia', 'id'); 
+        return $this->belongsTo(EstanciaAlumno::class, 'ID_Estancia', 'id');
     }
 }

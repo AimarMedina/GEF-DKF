@@ -29,7 +29,6 @@ async function cargarSeguimientos() {
       `http://localhost:8000/api/estancia/${props.estanciaId}/seguimientos`,
       { headers: { Authorization: `Bearer ${token}` } }
     )
-    console.log('seguimientos cargados:', res.data) // <-- revisa aquí
     seguimientos.value = res.data
   } catch (err) {
     console.error(err)
@@ -43,9 +42,8 @@ function abrirCrearModal() {
 }
 
 function abrirEditarModal(s) {
-  // Mapear ID correctamente
   editing.value = {
-    ID: s.ID ?? s.id,
+    id: s.id,
     Fecha: s.Fecha,
     Hora: s.Hora,
     Accion_seguimiento: s.Accion_seguimiento,
@@ -73,18 +71,20 @@ async function guardarNuevoSeguimiento(data) {
 
 // Guardar seguimiento (editar)
 async function guardarEdicionSeguimiento(data) {
+  console.log(data);
+  
   const token = localStorage.getItem('token')
-  if (!data.ID) {
+  if (!data.id) {
     alert('No se puede editar: falta ID')
     return
   }
   try {
     const res = await axios.put(
-      `http://localhost:8000/api/seguimiento/${data.ID}`,
+      `http://localhost:8000/api/seguimiento/${data.id}`,
       data,
       { headers: { Authorization: `Bearer ${token}` } }
     )
-    const i = seguimientos.value.findIndex(s => s.ID === data.ID)
+    const i = seguimientos.value.findIndex(s => s.id === data.id)
     if (i !== -1) seguimientos.value[i] = res.data
     editarModalVisible.value = false
     editing.value = null
@@ -96,6 +96,7 @@ async function guardarEdicionSeguimiento(data) {
 
 // Eliminar seguimiento
 async function eliminarSeguimiento(id) {
+  
   if (!id) {
     alert('No se puede eliminar: falta ID')
     return
@@ -103,10 +104,12 @@ async function eliminarSeguimiento(id) {
 
   const token = localStorage.getItem('token')
   try {
-    await axios.delete(`http://localhost:8000/api/seguimiento/${Number(id)}`, 
+    const res = await axios.delete(`http://localhost:8000/api/seguimiento/${id}`, 
       { headers: { Authorization: `Bearer ${token}` } }
     )
-    seguimientos.value = seguimientos.value.filter(s => (s.ID ?? s.id) !== id)
+    seguimientos.value = seguimientos.value.filter(s => (s.id) !== id)
+    console.log(res.data);
+    
   } catch (err) {
     console.error(err)
     alert('Error al eliminar seguimiento')
@@ -138,7 +141,7 @@ watch(() => props.estanciaId, cargarSeguimientos)
         </tr>
       </thead>
       <tbody>
-        <tr v-for="s in seguimientos" :key="s.ID ?? s.id">
+        <tr v-for="s in seguimientos" :key="s.id">
           <td>{{ s.Fecha }}</td>
           <td>{{ s.Hora }}</td>
           <td>{{ s.Accion_seguimiento }}</td>
@@ -146,7 +149,7 @@ watch(() => props.estanciaId, cargarSeguimientos)
           <td>
             <button class="btn btn-sm btn-warning" @click="abrirEditarModal(s)">Editar</button>
             <button class="btn btn-sm btn-danger" 
-                    @click="eliminarSeguimiento(s.ID ?? s.id)">Eliminar</button>
+                    @click="eliminarSeguimiento(s.id)">Eliminar</button>
           </td>
         </tr>
 
