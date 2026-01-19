@@ -116,3 +116,5 @@ Route::post('/alumnos/{idAlumno}/notas', [NotasEmpresaController::class, 'store'
 |--------------------------------------------------------------------------
 */
 Route::get('/grados', [GradoController::class, 'getGrados']);
+Route::get('/grados/{id}/asignaturas', [GradoController::class, 'getAsignaturas']);
+Route::get('/grados/{id}/competencias', [GradoController::class, 'getCompetencias']);

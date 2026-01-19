@@ -15,7 +15,7 @@ import TutorCuadernosView from '@/views/cuadernos/TutorCuadernosView.vue';
 
 import NotasAlumnoView from '@/views/alumno/NotasAlumnoView.vue'
 import AlumnoNotasView from '@/views/alumno/AlumnoNotasView.vue'
-import GradosTable from '@/components/GradosTable.vue'
+import GradosView from '@/views/GradosView.vue'
 
 
 const router = createRouter({
@@ -96,7 +96,7 @@ const router = createRouter({
     {
       path: "/grados",
       name: "grados",
-      component: GradosTable
+      component: GradosView
     }
     
 
