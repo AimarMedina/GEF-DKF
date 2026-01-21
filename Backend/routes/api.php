@@ -1,7 +1,9 @@
 <?php
 
 use App\Http\Controllers\EmpresaController;
+use App\Http\Controllers\EstanciaCompetenciaController;
 use App\Http\Controllers\GradoController;
+use App\Http\Controllers\NotasCompetenciaController;
 use App\Http\Controllers\TutorController;
 use App\Http\Controllers\InstructorController;
 use App\Http\Controllers\AlumnoController;
@@ -83,7 +85,7 @@ Route::get('/tutor/{id}/grados', [TutorController::class, 'grados']);
 |--------------------------------------------------------------------------
 */
 // Para tutor
-Route::post('asignarEstancia',[EstanciaController::class,'asignarEstancia'])->middleware('auth:sanctum');
+Route::post('asignarEstancia', [EstanciaController::class, 'asignarEstancia'])->middleware('auth:sanctum');
 Route::get('/tutor/alumno/{id}/estancias', [EstanciaController::class, 'historialEstanciasAlumno']);
 // Para alumno
 Route::get('/alumno/{id}/estancia', [EstanciaController::class, 'getEstanciaActual']);
@@ -152,13 +154,20 @@ Route::post('/ras', [RaController::class, 'store']);
 Route::delete('/ras/{id}', [RaController::class, 'destroy']);
 Route::post('/asignaturas', [AsignaturaController::class, 'store']);
 Route::delete('/asignaturas/{id}', [AsignaturaController::class, 'destroy']);
-Route::post('/competencias',[CompetenciaController::class, 'store']);
+Route::post('/competencias', [CompetenciaController::class, 'store']);
 Route::delete('/competencias/{id}', [CompetenciaController::class, 'destroy']);
 
 Route::get('/grado/{id}/matriz-competencias/', [CompRaController::class, 'getCompRa']);
-Route::post('compRa/create',[CompRaController::class,'createOrDelete']);
+Route::post('compRa/create', [CompRaController::class, 'createOrDelete']);
 
 Route::get(
-  '/estancias/{id}/competencias',
-  [EstanciaController::class, 'competencias']
+    '/estancias/{id}/competencias',
+    [EstanciaController::class, 'competencias']
 );
+Route::post(
+    '/estancias/{estancia}/competencias',
+    [EstanciaCompetenciaController::class, 'create']
+);
+
+Route::put('/alumnos/{alumnoId}/competencias/{competenciaId}/nota',[NotasCompetenciaController::class, 'guardarNota']);
+Route::delete('estancias/{estanciaId}/competencias/{competenciaId}',[EstanciaCompetenciaController::class,'delete']);

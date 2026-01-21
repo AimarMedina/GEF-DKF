@@ -12,7 +12,6 @@ const userStore = useUserStore()
 const tutorId = userStore.user.id
 
 const alumnos = ref([])
-const q = ref('')
 const cargando = ref(false)
 const alumnoSeleccionado = ref(null)
 const emit = defineEmits(['seleccionarAlumno'])
@@ -39,9 +38,6 @@ function seleccionarAlumno(a) {
 }
 
 
-function onSearch(texto) {
-  q.value = (texto || '').trim().toLowerCase()
-}
 
 
 onMounted(cargarAlumnos)
@@ -49,7 +45,6 @@ onMounted(cargarAlumnos)
 
 <template>
     <div class="col-md-3 mt-3">
-      <Buscador tipo="Buscar Alumno" @search="onSearch" />
 
       <ul v-if="alumnos" class="list-group mt-3 shadow-sm">
         <button

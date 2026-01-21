@@ -27,4 +27,9 @@ class Competencia extends Model
             'comp_estancia'
         );
     }
+    public function notas()
+    {
+        return $this->hasMany(NotaCompetencia::class, 'ID_Competencia', 'id');
+    }
+
 }
