@@ -10,13 +10,13 @@ class NotaCompetenciaSeeder extends Seeder
     public function run(): void
     {
         DB::table('nota_competencia')->insert([
-            ['id' => 1, 'ID_Competencia' => 1, 'ID_Alumno' => 20001, 'Nota' => 8.00],
-            ['id' => 2, 'ID_Competencia' => 2, 'ID_Alumno' => 20001, 'Nota' => 7.50],
-            ['id' => 3, 'ID_Competencia' => 3, 'ID_Alumno' => 20001, 'Nota' => 8.75],
-            ['id' => 4, 'ID_Competencia' => 1, 'ID_Alumno' => 20002, 'Nota' => 7.00],
-            ['id' => 5, 'ID_Competencia' => 3, 'ID_Alumno' => 20003, 'Nota' => 7.50],
-            ['id' => 6, 'ID_Competencia' => 2, 'ID_Alumno' => 20004, 'Nota' => 6.75],
-            ['id' => 7, 'ID_Competencia' => 1, 'ID_Alumno' => 20005, 'Nota' => 8.25],
+            ['id' => 1, 'ID_Competencia' => 1, 'ID_Alumno' => 20001, 'Nota' => 4],
+            ['id' => 2, 'ID_Competencia' => 2, 'ID_Alumno' => 20001, 'Nota' => 4],
+            ['id' => 3, 'ID_Competencia' => 3, 'ID_Alumno' => 20001, 'Nota' => 4],
+            ['id' => 4, 'ID_Competencia' => 1, 'ID_Alumno' => 20002, 'Nota' => 2],
+            ['id' => 5, 'ID_Competencia' => 3, 'ID_Alumno' => 20003, 'Nota' => 3],
+            ['id' => 6, 'ID_Competencia' => 2, 'ID_Alumno' => 20004, 'Nota' => 2],
+            ['id' => 7, 'ID_Competencia' => 1, 'ID_Alumno' => 20005, 'Nota' => 1],
         ]);
     }
 }

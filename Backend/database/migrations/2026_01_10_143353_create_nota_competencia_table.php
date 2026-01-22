@@ -10,7 +10,7 @@ return new class extends Migration {
             $table->id();
             $table->unsignedBigInteger('ID_Competencia');
             $table->unsignedBigInteger('ID_Alumno');
-            $table->float('Nota',52);
+            $table->integer('Nota');
             $table->timestamps();
 
             $table->foreign('ID_Competencia')

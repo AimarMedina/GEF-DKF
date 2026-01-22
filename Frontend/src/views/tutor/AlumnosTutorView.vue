@@ -3,8 +3,13 @@ import { ref } from 'vue'
 import Navbar from '@/components/Navbar.vue'
 import AlumnosList from '@/components/AlumnosList.vue'
 import AlumnoDatos from '@/components/Tutor/AlumnoDatos.vue'
+import { useRoute } from 'vue-router'
 
 const alumnoSeleccionado = ref(null)
+const route = useRoute();
+
+const tutorId = route.params.id;
+
 </script>
 
 <template>
@@ -12,7 +17,7 @@ const alumnoSeleccionado = ref(null)
 
   <div class="container-fluid">
     <div class="row">
-      <AlumnosList @seleccionarAlumno="alumnoSeleccionado = $event" />
+      <AlumnosList @seleccionarAlumno="alumnoSeleccionado = $event" :endpoint="`http://localhost:8000/api/tutores/${tutorId}/alumnos`" />
       <AlumnoDatos :alumno="alumnoSeleccionado" />
     </div>
   </div>
