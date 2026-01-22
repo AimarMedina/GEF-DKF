@@ -214,6 +214,7 @@ function cerrarModal(){
 </template>
 
 <style>
+
 .btn-indigo {
   background-color: #4f46e5;
   border-color: #4f46e5;
@@ -227,5 +228,11 @@ function cerrarModal(){
 
 .card {
   border-radius: 6px;
+}
+.modal-content {
+  transition: transform 0.2s ease-in-out;
+}
+.modal-content:hover {
+  transform: scale(1.01);
 }
 </style>
