@@ -10,8 +10,9 @@ class EstanciaAlumno extends Model
     protected $fillable = [
         'ID_Alumno',
         'CIF_Empresa',
-        'Fecha_Inicio',
-        'Fecha_Fin'
+        'Fecha_inicio',
+        'Fecha_fin',
+        'Horas_totales'
     ];
 
     public function horario()
@@ -28,7 +29,6 @@ class EstanciaAlumno extends Model
     }
     public function alumno()
     {
-
         return $this->belongsTo(Alumno::class, 'ID_Alumno', 'ID_Usuario');
     }
     public function competencias()

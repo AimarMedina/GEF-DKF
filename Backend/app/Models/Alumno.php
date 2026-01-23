@@ -55,7 +55,7 @@ class Alumno extends Model
     public function estanciaActual()
     {
         return $this->hasOne(EstanciaAlumno::class, 'ID_Alumno', 'ID_Usuario')
-            ->whereNull('Fecha_fin');
+            ->latestOfMany();
     }
 
     public function cuadernos()
@@ -72,8 +72,8 @@ class Alumno extends Model
         return $this->hasMany(NotaEgibide::class, 'ID_Alumno', 'ID_Usuario');
     }
 
-    public function notaCuaderno(){
-        return $this->hasOne(NotaCuaderno::class,'ID_Alumno','ID_Usuario');
+    public function notaCuaderno()
+    {
+        return $this->hasOne(NotaCuaderno::class, 'ID_Alumno', 'ID_Usuario');
     }
-
 }
