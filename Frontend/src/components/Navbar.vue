@@ -158,13 +158,14 @@ import { useRouter } from "vue-router";
 import { RouterLink } from "vue-router";
 const router = useRouter();
 const userStore = useUserStore()
+import api from '@/services/api.js'
 
 let message = ref()
 let usuario = userStore.user
 async function logout() {
     const token = localStorage.getItem('token')
     try {
-        const response = await axios.post('http://localhost:8000/api/logout', {}, {
+        const response = await api.post('/api/logout', {}, {
             headers: {
                 Authorization: `Bearer ${token}`
             }

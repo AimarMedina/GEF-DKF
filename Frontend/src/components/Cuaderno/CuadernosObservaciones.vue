@@ -2,6 +2,7 @@
 import { ref, onMounted } from 'vue'
 import axios from 'axios'
 import { useUserStore } from '@/stores/userStore'
+import api from '@/services/api.js'
 
 const userStore = useUserStore()
 const tutorId = userStore.user?.id
@@ -13,15 +14,15 @@ async function fetchEntregas() {
   if (!tutorId) return
 
   try {
-    const { data: grados } = await axios.get(
-      `http://localhost:8000/api/tutor/${tutorId}/grados`
+    const { data: grados } = await api.get(
+      `/api/tutor/${tutorId}/grados`
     )
 
     entregasPorGrado.value = []
 
     for (const grado of grados) {
-      const { data: entregas } = await axios.get(
-        `http://localhost:8000/api/grado/${grado.id}/entregas`,
+      const { data: entregas } = await api.get(
+        `/api/grado/${grado.id}/entregas`,
         {
           params: {
             tutor_id: tutorId
@@ -48,7 +49,7 @@ async function fetchEntregas() {
 
 async function guardarObservacionYFeedback(alumnoEntrega) {
   try {
-    await axios.post('http://localhost:8000/api/observacionesCuadernoAlumno', {
+    await api.post('/api/observacionesCuadernoAlumno', {
       ID_Cuaderno: alumnoEntrega.id,
       Observaciones: alumnoEntrega.Observaciones ?? '',
       Feedback: alumnoEntrega.Feedback ?? null,
@@ -76,8 +77,8 @@ async function crearNuevaEntrega(gradoId) {
   }
 
   try {
-    const { data } = await axios.post(
-      `http://localhost:8000/api/grado/${gradoId}/entregas`,
+    const { data } = await api.post(
+      `/api/grado/${gradoId}/entregas`,
       {
         Descripcion: nuevaEntrega.Descripcion,
         Fecha_Limite: nuevaEntrega.Fecha_Limite
@@ -105,7 +106,7 @@ async function eliminarEntrega(entregaId, gradoId) {
   if (!confirm('¿Seguro que quieres eliminar esta entrega? Esta acción no se puede deshacer.')) return
 
   try {
-    await axios.delete(`http://localhost:8000/api/grado/${gradoId}/entregas/${entregaId}`)
+    await api.delete(`/api/grado/${gradoId}/entregas/${entregaId}`)
 
     // Quitar entrega de la lista en Vue
     const bloque = entregasPorGrado.value.find(b => b.grado.id === gradoId)
@@ -188,7 +189,7 @@ async function eliminarEntrega(entregaId, gradoId) {
 
                   <td class="text-center">
                     <a v-if="alumnoEntrega.URL_Cuaderno"
-                      :href="`http://localhost:8000/api/alumno/entregas/descargar/${alumnoEntrega.id}`" target="_blank">
+                      :href="`/api/alumno/entregas/descargar/${alumnoEntrega.id}`" target="_blank">
                       Descargar PDF
                     </a>
                   </td>
