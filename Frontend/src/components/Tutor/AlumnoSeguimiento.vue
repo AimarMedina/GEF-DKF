@@ -23,7 +23,7 @@ const seguimientoEliminar = ref(null)
 
 // Cargar seguimientos
 async function cargarSeguimientos() {
-  const token = localStorage.getItem('token')
+  
   if (!props.estanciaId) return
 
   try {
@@ -63,7 +63,7 @@ function confirmarEliminar(confirmado) {
 
 // Guardar seguimiento (crear)
 async function guardarNuevoSeguimiento(data) {
-  const token = localStorage.getItem('token')
+  
   try {
     const res = await api.post(
       `/api/seguimiento`,
@@ -83,7 +83,7 @@ async function guardarEdicionSeguimiento(data) {
     alert('No se puede editar: falta ID')
     return
   }
-  const token = localStorage.getItem('token')
+  
   try {
     const res = await api.put(
       `/api/seguimiento/${data.id}`,
@@ -106,7 +106,7 @@ async function eliminarSeguimiento(id) {
     return
   }
 
-  const token = localStorage.getItem('token')
+  
   try {
     const res = await api.delete(`/api/seguimiento/${id}`
     )

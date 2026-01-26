@@ -47,10 +47,8 @@ function resetHorarios(){
 }
 
 onMounted(async () => {
-  const token = localStorage.getItem('token')
-  const res = await api.get('/api/empresas', {
-    headers:{ Authorization:`Bearer ${token}` }
-  })
+  
+  const res = await api.get('/api/empresas')
   empresas.value = res.data.data || []
   
 })
@@ -69,10 +67,8 @@ watch(() => props.show, val => {
 
 watch(() => nuevaEstancia.value.CIF_Empresa, async cif => {
   if(!cif) return
-  const token = localStorage.getItem('token')
-  const res = await api.get(`/api/empresa/${cif}/instructores`, {
-    headers:{ Authorization:`Bearer ${token}` }
-  })
+  
+  const res = await api.get(`/api/empresa/${cif}/instructores`)
   instructores.value = res.data || []
   console.log(instructores.value);
 })
@@ -102,11 +98,10 @@ async function crearEstancia(){
   }
 
   try {
-    const token = localStorage.getItem('token')
+    
     const res = await api.post(
       '/api/asignarEstancia',
-      payload,
-      { headers:{ Authorization:`Bearer ${token}` } }
+      payload
     )
     emit('crear', res.data)
     cerrarModal()

@@ -37,10 +37,7 @@ async function crear() {
   error.value = ''
 
   try {
-    const token = localStorage.getItem('token')
-    const res = await api.post('/api/grados', form.value, {
-      headers: { Authorization: `Bearer ${token}` }
-    })
+    const res = await api.post('/api/grados', form.value)
 
     emit('created', res.data)
     emit('close')

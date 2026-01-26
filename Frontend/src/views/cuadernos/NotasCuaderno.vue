@@ -2,6 +2,7 @@
 import { ref, onMounted } from 'vue'
 import axios from 'axios'
 import { useUserStore } from '@/stores/userStore'
+import api from '@/services/api.js'
 
 const userStore = useUserStore()
 const tutorId = userStore.user?.id
@@ -11,7 +12,7 @@ const mensaje = ref('')
 
 async function fetchNotas() {
   try {
-    const res = await axios.get(
+    const res = await api.get(
       `http://localhost:8000/api/tutor/${tutorId}/notas-cuaderno`
     )
 
@@ -30,7 +31,7 @@ async function fetchNotas() {
 
 async function guardarNota(alumno) {
   try {
-    await axios.post('http://localhost:8000/api/nota-cuaderno', {
+    await api.post('http://localhost:8000/api/nota-cuaderno', {
       ID_Alumno: alumno.ID_Usuario,
       Nota: alumno.nota_cuaderno.Nota,
     })

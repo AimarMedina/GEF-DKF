@@ -74,10 +74,8 @@ async function confirmarEliminar(confirmado) {
 
 async function eliminarGrado(id) {
   try {
-    const token = localStorage.getItem('token');
-    await api.delete(`/api/grados/${id}`, {
-      headers: { Authorization: `Bearer ${token}` }
-    });
+    
+    await api.delete(`/api/grados/${id}`);
     
     console.log('Grado eliminado correctamente');
     
