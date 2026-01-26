@@ -166,8 +166,7 @@ class AlumnoController extends Controller
 
         if (
             $user->tipo !== 'admin' &&
-            $user->id != $alumno->ID_Tutor &&
-            $user->id != $alumno->ID_Instructor
+            $user->id != $alumno->ID_Tutor
         ) {
             return response()->json(['message' => 'No autorizado'], 403);
         }

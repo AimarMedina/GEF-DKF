@@ -20,8 +20,8 @@ const props = defineProps({
           <td class="text-center text-md-start">{{ n.transversal?.descripcion ?? 'Sin descripción' }}</td>
           <td class="text-center text-md-start">
             <span :class="{
-              'badge bg-success': n.Nota >= 5,
-              'badge bg-danger text-white': n.Nota < 5,
+              'badge bg-success': n.Nota >= 3,
+              'badge bg-danger text-white': n.Nota < 3,
               'badge bg-warning text-dark': n.Nota == null
             }">{{ n.Nota ?? 'Sin nota' }}</span>
           </td>

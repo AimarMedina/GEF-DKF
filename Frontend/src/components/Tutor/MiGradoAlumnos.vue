@@ -4,11 +4,15 @@ import api from "@/services/api.js"
 import { useNotasStore } from "@/stores/notas.js";
 
 const notasStore = useNotasStore();
+
 // Estados
 const alumnos = ref([]);
 const asignaturas = ref([]);
 const gradoNombre = ref("");
 const loading = ref(false);
+
+// Estado para feedback visual de guardado (ID_Alumno-ID_Asignatura -> 'success' | 'error')
+const inputStatus = ref({}); 
 
 // Paginación
 const currentPage = ref(1);
@@ -23,18 +27,17 @@ const toggleNotas = (idAlumno) => {
 };
 
 // Cargar datos del tutor
-const fetchDatosGrado = async (page = 1) => {
-  loading.value = true;
+// param loadingGlobal: true para mostrar el spinner grande, false para recargas silenciosas
+const fetchDatosGrado = async (page = 1, loadingGlobal = true) => {
+  if (loadingGlobal) loading.value = true;
   currentPage.value = page;
 
   try {
-    const token = localStorage.getItem('token');
     const res = await api.get("/api/mi-grado/gestion", {
-      headers: { Authorization: `Bearer ${token}` },
       params: { page, per_page: perPage.value }
     });
 
-    // Guardar en los refs locales para la tabla
+    // Guardar en los refs locales
     alumnos.value = res.data.alumnos.data;
     asignaturas.value = res.data.asignaturas;
     gradoNombre.value = res.data.grado.nombre;
@@ -47,7 +50,8 @@ const fetchDatosGrado = async (page = 1) => {
       grado: res.data.grado
     });
 
-    alumnoDesplegado.value = null;
+    // IMPORTANTE: No cerramos el acordeón si estamos recargando tras editar nota
+    // alumnoDesplegado.value = null; 
 
   } catch (error) {
     console.error("Error cargando datos:", error);
@@ -57,6 +61,37 @@ const fetchDatosGrado = async (page = 1) => {
   }
 };
 
+// --- FUNCIÓN PARA GUARDAR NOTA DE EGIBIDE ---
+const actualizarNotaEgibide = async (idAlumno, idAsignatura, nuevaNota) => {
+    const key = `${idAlumno}-${idAsignatura}`;
+    
+    // Validación básica
+    if (nuevaNota === '' || nuevaNota < 0 || nuevaNota > 10) {
+        alert("La nota debe estar entre 0 y 10");
+        return;
+    }
+
+    try {
+        // Llamada a la API
+        await api.post(`/api/alumnos/${idAlumno}/nota-egibide`, {
+            id_asignatura: idAsignatura,
+            nota: nuevaNota
+        });
+
+        // Feedback visual: Verde
+        inputStatus.value[key] = 'is-valid'; // Clase de Bootstrap
+        setTimeout(() => delete inputStatus.value[key], 2000);
+
+        // Recargamos los datos "en silencio" para que se recalcule la NOTA FINAL y los PROMEDIOS
+        await fetchDatosGrado(currentPage.value, false);
+
+    } catch (error) {
+        console.error(error);
+        // Feedback visual: Rojo
+        inputStatus.value[key] = 'is-invalid';
+        alert("Error al guardar la nota. Inténtalo de nuevo.");
+    }
+};
 
 
 // Función para obtener el estado de un alumno
@@ -86,15 +121,11 @@ const obtenerEstadoAlumno = (alumno) => {
       if (notasAsig.nota_empresa_calculada === '-' || notasAsig.nota_empresa_calculada === null) {
         causas.push("Faltan datos Empresa");
       }
-      if (notasAsig.cuaderno === 0 || notasAsig.cuaderno === '-') {
-        causas.push("Sin nota de cuaderno");
-      }
-      if (notasAsig.transversal === 0 || notasAsig.transversal === '-') {
-        causas.push("Sin competencias transversales");
-      }
-      if (notasAsig.tecnica === 0 || notasAsig.tecnica === '-') {
-        causas.push("Sin competencias técnicas");
-      }
+      
+      // Agregamos chequeos adicionales si es necesario
+      if (notasAsig.cuaderno === 0 || notasAsig.cuaderno === '-') causas.push("Cuaderno");
+      if (notasAsig.transversal === 0 || notasAsig.transversal === '-') causas.push("Transversal");
+      if (notasAsig.tecnica === 0 || notasAsig.tecnica === '-') causas.push("Técnica");
 
       errores.push(`${asig.nombre}: ${causas.join(', ')}`);
     } else {
@@ -126,7 +157,6 @@ const obtenerEstadoAlumno = (alumno) => {
   }
 };
 
-// Computed para obtener clase de badge según estado
 const getBadgeClass = (tipo) => {
   switch(tipo) {
     case 'completo': return 'bg-success';
@@ -139,8 +169,6 @@ const getBadgeClass = (tipo) => {
 onMounted(() => {
   fetchDatosGrado(1);
 });
-
-
 </script>
 
 <template>
@@ -156,7 +184,7 @@ onMounted(() => {
     <div class="card-body p-0">
       <div v-if="loading" class="text-center p-5">
         <div class="spinner-border text-indigo" role="status"></div>
-        <p class="mt-2 text-muted">Calculando notas...</p>
+        <p class="mt-2 text-muted">Cargando alumnos...</p>
       </div>
 
       <div v-else class="table-responsive">
@@ -179,6 +207,7 @@ onMounted(() => {
                     class="badge" 
                     :class="getBadgeClass(obtenerEstadoAlumno(alumno).tipo)"
                     :title="obtenerEstadoAlumno(alumno).errores.join('\n')"
+                    style="cursor: help;"
                   >
                     <i class="bi" :class="obtenerEstadoAlumno(alumno).icono"></i>
                     {{ obtenerEstadoAlumno(alumno).mensaje }}
@@ -200,11 +229,10 @@ onMounted(() => {
                 <td colspan="5" class="p-0">
                   <div class="p-4 border-bottom border-indigo-subtle animacion-entrada">
                     
-                    <!-- Alertas de estado -->
                     <div v-if="obtenerEstadoAlumno(alumno).tipo === 'incompleto'" class="alert alert-danger d-flex align-items-start mb-3">
                       <i class="bi bi-exclamation-triangle-fill me-2 fs-5"></i>
                       <div>
-                        <strong>No se pueden calcular las notas finales</strong>
+                        <strong>Faltan datos para calcular la nota final</strong>
                         <ul class="mb-0 mt-2 small">
                           <li v-for="(error, idx) in obtenerEstadoAlumno(alumno).errores" :key="idx" class="text-start">
                             {{ error }}
@@ -216,7 +244,7 @@ onMounted(() => {
                     <div v-else-if="obtenerEstadoAlumno(alumno).tipo === 'parcial'" class="alert alert-warning d-flex align-items-start mb-3">
                       <i class="bi bi-exclamation-circle-fill me-2 fs-5"></i>
                       <div>
-                        <strong>Cálculo parcial de notas</strong>
+                        <strong>Cálculo parcial</strong> (Algunas asignaturas incompletas)
                         <ul class="mb-0 mt-2 small">
                           <li v-for="(error, idx) in obtenerEstadoAlumno(alumno).errores" :key="idx">
                             {{ error }}
@@ -227,19 +255,22 @@ onMounted(() => {
 
                     <div v-else-if="obtenerEstadoAlumno(alumno).tipo === 'completo'" class="alert alert-success d-flex align-items-center mb-3">
                       <i class="bi bi-check-circle-fill me-2 fs-5"></i>
-                      <strong>Todas las notas finales han sido calculadas correctamente</strong>
+                      <strong>Todas las notas finales calculadas correctamente</strong>
                     </div>
 
                     <h6 class="text-indigo fw-bold mb-3">
                       <i class="bi bi-journal-text me-2"></i>
-                      Resumen de Calificaciones
+                      Calificaciones Detalladas
                     </h6>
 
                     <table class="table table-sm table-bordered bg-white shadow-sm mb-0 text-center align-middle">
                       <thead class="table-secondary small">
                         <tr>
                           <th rowspan="2" class="align-middle">Asignatura</th>
-                          <th rowspan="2" class="align-middle bg-warning-subtle" style="width: 15%;">Nota Egibide (80%)</th>
+                          <th rowspan="2" class="align-middle bg-warning-subtle" style="width: 15%;">
+                            Nota Egibide (80%)<br>
+                            <span class="text-muted" style="font-size: 0.7em">(Editable)</span>
+                          </th>
                           <th colspan="3" class="border-bottom-0">Parte Empresa (20%)</th>
                           <th rowspan="2" class="align-middle bg-success-subtle" style="width: 10%;">NOTA FINAL</th>
                         </tr>
@@ -253,8 +284,18 @@ onMounted(() => {
                         <tr v-for="asig in asignaturas" :key="asig.id">
                           <td class="text-start px-3 fw-bold text-secondary">{{ asig.nombre }}</td>
                           
-                          <td class="bg-warning-subtle fw-bold text-dark">
-                            {{ alumno.notas_calculadas?.[asig.id]?.egibide ?? '-' }}
+                          <td class="bg-warning-subtle fw-bold text-dark p-1">
+                            <input 
+                              type="number" 
+                              step="0.01"
+                              min="0" 
+                              max="10"
+                              class="form-control form-control-sm text-center fw-bold"
+                              :class="inputStatus[`${alumno.id}-${asig.id}`]"
+                              :value="alumno.notas_calculadas?.[asig.id]?.egibide !== '-' ? alumno.notas_calculadas?.[asig.id]?.egibide : ''"
+                              placeholder="-"
+                              @change="actualizarNotaEgibide(alumno.id, asig.id, $event.target.value)"
+                            >
                           </td>
 
                           <td class="text-muted fst-italic">
@@ -288,7 +329,6 @@ onMounted(() => {
         </table>
       </div>
 
-      <!-- PAGINACIÓN -->
       <div v-if="totalPages > 1" class="card-footer bg-white border-top">
         <nav>
           <ul class="pagination mb-0 justify-content-center">
@@ -342,6 +382,18 @@ onMounted(() => {
   padding: 0.5rem 0.75rem;
   font-size: 0.75rem;
   font-weight: 500;
+}
+
+/* Estilo para el input de nota */
+input[type=number] {
+    font-size: 1rem;
+    color: #495057;
+}
+/* Eliminar flechas del input number en algunos navegadores */
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+  -webkit-appearance: none; 
+  margin: 0; 
 }
 
 .pagination {

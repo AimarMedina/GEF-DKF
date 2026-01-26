@@ -13,11 +13,9 @@ const mensaje = ref('')
 
 // Fetch de entregas del alumno
 async function fetchEntregas() {
-  const token = localStorage.getItem('token')
   try {
     const res = await api.get(
-      `/api/entregas/alumno/${alumnoId}`,
-      { headers: { Authorization: `Bearer ${token}` } }
+      `/api/entregas/alumno/${alumnoId}`
     )
     entregas.value = res.data
   } catch (err) {
@@ -60,7 +58,7 @@ async function subirPDF(entregaId) {
     await api.post(
       `/api/entregarCuaderno/alumno/${alumnoId}`,
       formData,
-      { headers: { Authorization: `Bearer ${userStore.token}`, 'Content-Type': 'multipart/form-data' } }
+      { headers: { 'Content-Type': 'multipart/form-data' } }
     )
     archivos.value[entregaId] = {}
     fetchEntregas()

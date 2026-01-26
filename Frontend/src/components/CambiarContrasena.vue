@@ -1,6 +1,6 @@
 <script setup>
 import { ref, reactive } from 'vue';
-import api from '@/services/api.js'; // Tu instancia de axios sin interceptores
+import api from '@/services/api.js'; 
 import { useRouter } from 'vue-router';
 
 const router = useRouter();
@@ -37,20 +37,13 @@ const cambiarContrasena = async () => {
   }
 
   // 2. Recuperar token manualmente
-  const token = localStorage.getItem('token');
-  if (!token) {
-    error.value = "No estás autenticado. Por favor, inicia sesión.";
-    loading.value = false;
-    return;
-  }
+  
+
 
   try {
     // 3. Petición al Backend pasando el Token manualmente
-    const response = await api.post('/api/change-password', form, {
-      headers: {
-        Authorization: `Bearer ${token}` // <--- AQUÍ PASAMOS EL TOKEN
-      }
-    });
+    const response = await api.post('/api/change-password', form
+    );
 
     // Éxito
     mensaje.value = "Contraseña actualizada correctamente.";
