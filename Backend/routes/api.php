@@ -69,7 +69,7 @@ Route::put('/alumnos/{idAlumno}/asignar-instructor', [AlumnoController::class, '
     Route::get('/alumno/{id}/estancia', [EstanciaController::class, 'getEstanciaActual']); // Alumno
     Route::get('/empresa/{cif}/alumnos', [EstanciaController::class, 'getCompanyAlumnos']);
     Route::get('/alumno/{id}/estancia', [EstanciaController::class, 'getEstanciaActual']);
-
+    Route::get('/tutores/disponibles', [TutorController::class, 'getTutoresDisponibles']);
 
     //Cuaderno
     Route::get('/alumno/{id}', [AlumnoController::class, 'getGrado']);
