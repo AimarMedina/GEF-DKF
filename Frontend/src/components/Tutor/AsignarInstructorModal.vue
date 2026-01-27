@@ -53,11 +53,10 @@ async function asignar() {
   error.value = ''
   
   try {
-    const token = localStorage.getItem('token')
+    
     await api.put(
       `/api/alumnos/${props.alumno.ID_Usuario}/asignar-instructor`,
-      { ID_Instructor: instructorId.value },
-      { headers: { Authorization: `Bearer ${token}` } }
+      { ID_Instructor: instructorId.value }
     )
 
     emit('asignado')

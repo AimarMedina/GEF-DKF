@@ -35,10 +35,8 @@ const alumnosSinEstancia = computed(() => {
 async function cargarAlumnos() {
   cargando.value = true
   try {
-    const token = localStorage.getItem('token')
-    const res = await api.get(prop.endpoint, {
-      headers: { Authorization: `Bearer ${token}` }
-    })
+    
+    const res = await api.get(prop.endpoint)
     alumnos.value = res.data
   } catch (e) {
     console.error('Error cargando alumnos', e)

@@ -1,6 +1,5 @@
 <script setup>
 import { ref, onMounted, watch } from 'vue'
-import axios from 'axios'
 import CrearSeguimientoModal from './CrearSeguimientoModal.vue'
 import EditarSeguimientoModal from './EditarSeguimientoModal.vue'
 import ConfirmarEliminar from '../ConfirmarEliminar.vue'
@@ -23,13 +22,12 @@ const seguimientoEliminar = ref(null)
 
 // Cargar seguimientos
 async function cargarSeguimientos() {
-  const token = localStorage.getItem('token')
+
   if (!props.estanciaId) return
 
   try {
     const res = await api.get(
-      `/api/estancia/${props.estanciaId}/seguimientos`,
-      { headers: { Authorization: `Bearer ${token}` } }
+      `/api/estancia/${props.estanciaId}/seguimientos`
     )
     seguimientos.value = res.data
   } catch (err) {
@@ -64,12 +62,11 @@ function confirmarEliminar(confirmado) {
 
 // Guardar seguimiento (crear)
 async function guardarNuevoSeguimiento(data) {
-  const token = localStorage.getItem('token')
+
   try {
     const res = await api.post(
       `/api/seguimiento`,
-      { ...data, ID_Estancia: props.estanciaId },
-      { headers: { Authorization: `Bearer ${token}` } }
+      { ...data, ID_Estancia: props.estanciaId }
     )
     seguimientos.value.unshift(res.data)
     crearModalVisible.value = false
@@ -85,12 +82,11 @@ async function guardarEdicionSeguimiento(data) {
     alert('No se puede editar: falta ID')
     return
   }
-  const token = localStorage.getItem('token')
+
   try {
     const res = await api.put(
       `/api/seguimiento/${data.id}`,
-      data,
-      { headers: { Authorization: `Bearer ${token}` } }
+      data
     )
     const i = seguimientos.value.findIndex(s => s.id === data.id)
     if (i !== -1) seguimientos.value[i] = res.data
@@ -109,10 +105,9 @@ async function eliminarSeguimiento(id) {
     return
   }
 
-  const token = localStorage.getItem('token')
+
   try {
-    const res = await api.delete(`/api/seguimiento/${id}`,
-      { headers: { Authorization: `Bearer ${token}` } }
+    const res = await api.delete(`/api/seguimiento/${id}`
     )
     seguimientos.value = seguimientos.value.filter(s => (s.id) !== id)
     console.log(res.data);

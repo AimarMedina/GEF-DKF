@@ -1,6 +1,5 @@
 <script setup>
 import { ref, watch } from 'vue';
-import axios from 'axios';
 import FormularioCrear from '@/components/FormularioCrear.vue';
 import ConfirmarEliminar from '../ConfirmarEliminar.vue';
 import api from '@/services/api.js'

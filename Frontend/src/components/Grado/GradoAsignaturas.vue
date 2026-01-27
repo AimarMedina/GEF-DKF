@@ -1,6 +1,5 @@
 <script setup>
 import { ref, watch } from 'vue';
-import axios from 'axios';
 import FormularioCrear from '@/components/FormularioCrear.vue';
 import AsignaturaRas from './AsignaturaRas.vue';
 import ConfirmarEliminar from '../ConfirmarEliminar.vue'; // <--- IMPORTAMOS

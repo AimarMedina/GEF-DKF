@@ -143,7 +143,6 @@ a {
 
 <script setup>
 import { useUserStore } from "@/stores/userStore";
-import axios from "axios";
 import { ref } from "vue";
 import { useRouter } from "vue-router";
 import { RouterLink } from "vue-router";
@@ -154,20 +153,14 @@ import api from "@/services/api.js";
 let message = ref();
 let usuario = userStore.user;
 async function logout() {
-  const token = localStorage.getItem("token");
   try {
     const response = await api.post(
       "/api/logout",
-      {},
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      },
+      {}
     );
     if (response.data.status === "success") {
       localStorage.removeItem("token");
-      delete axios.defaults.headers.common["Authorization"];
+      delete api.defaults.headers.common["Authorization"];
       userStore.user.value = null;
       router.push("/");
     }

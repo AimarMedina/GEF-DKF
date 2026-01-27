@@ -37,10 +37,10 @@ async function instructorAsignado() {
   
   // Recargar los datos del alumno para obtener el instructor actualizado
   try {
-    const token = localStorage.getItem('token')
+    
     const res = await api.get(
-      `/api/alumno/${props.alumno.ID_Usuario}/mis-notas`,
-      { headers: { Authorization: `Bearer ${token}` } }
+      `/api/alumno/${props.alumno.ID_Usuario}/mis-notas`
+      
     )
     
     // Actualizar el instructor en el objeto alumno
@@ -75,10 +75,8 @@ async function confirmarEliminarEstancia(confirmado) {
 
 async function eliminarEstancia(estanciaId) {
   try {
-    const token = localStorage.getItem('token')
-    await api.delete(`/api/estancia/${estanciaId}`, {
-      headers: { Authorization: `Bearer ${token}` }
-    })
+    
+    await api.delete(`/api/estancia/${estanciaId}`)
     console.log('Estancia eliminada correctamente')
     
     // Limpiar la estancia del alumno para que baje a la tabla de sin estancia
@@ -111,10 +109,9 @@ watch(
     }
 
     try {
-      const token = localStorage.getItem('token')
+      
       const res = await api.get(
-        `/api/alumno/${alumno.ID_Usuario}/mis-notas`,
-        { headers: { Authorization: `Bearer ${token}` } }
+        `/api/alumno/${alumno.ID_Usuario}/mis-notas`
       )
 
       const data = res.data
@@ -153,7 +150,7 @@ watch(
 </script>
 
 <template>
-  <div v-if="alumno" class="col-md-9 mt-3">
+  <div class="col-md-9 mt-3">
     <div class="card shadow-sm mt-3">
       <div class="card-header bg-indigo text-white">
         <h5 class="mb-0">{{ alumno?.usuario?.nombre }} {{ alumno?.usuario?.apellidos }}</h5>
