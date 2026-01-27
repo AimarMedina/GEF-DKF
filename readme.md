@@ -84,7 +84,7 @@ El diseño permite mantener **histórico de datos** por curso académico y facil
 
 ## 📅 Organización del proyecto
 
-* Trabajo en equipos de **3–4 personas**.
+* Trabajo en equipos de **3 personas**.
 * Desarrollo basado en **aprendizaje colaborativo por retos**.
 * Planificación ajustada a las **49 jornadas** del reto.
 
@@ -115,6 +115,34 @@ Proyecto correspondiente al **Reto 2: Gestor de Estancias Formativas**, dentro d
 
 ---
 
+## 🔑 Acceso a la aplicación (entorno de pruebas)
+
+La aplicación es accesible desde la siguiente dirección:
+
+**URL:** `http://172.20.228.22:5173`
+
+Credenciales disponibles para la demostración según el rol:
+
+* **Administrador**
+  Usuario: `admin@tes.com`
+  Contraseña: `admin`
+
+* **Alumno**
+  Usuario: `unai.alumno@centro.local`
+  Contraseña: `alumno`
+
+* **Tutor/a de centro**
+  Usuario: `maite.tutor@centro.local`
+  Contraseña: `tutor`
+
+* **Tutor/a de empresa**
+  Usuario: `nerea.instructor@empresa.local`
+  Contraseña: `instructor`
+
+> Estas credenciales se proporcionan únicamente con fines educativos y de evaluación del proyecto.
+
+---
+
 ## ✍️ Autoría
 
 Proyecto desarrollado por alumnado del CFGS **DAW** – Egibide.
@@ -125,4 +153,4 @@ Curso académico **2025–2026**.
 
 ## 📎 Licencia
 
-Este proyecto se desarrolla con fines educativos dentro del marco del Reto 2 de Egibide.
+Este proyecto se desarrolla con fines educativos dentro del marco del **Reto 2 de Egibide**.
