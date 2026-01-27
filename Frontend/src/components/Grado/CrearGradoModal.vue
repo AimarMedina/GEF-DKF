@@ -1,6 +1,7 @@
 <script setup>
 import { ref, watch } from 'vue'
 import api from '@/services/api.js'
+import BuscadorSelect from '@/components/BuscadorSelect.vue'
 
 const props = defineProps({
   show: Boolean
@@ -10,20 +11,34 @@ const emit = defineEmits(['close', 'created'])
 
 const form = ref({
   nombre: '',
-  curso: ''
+  curso: '',
+  id_tutor: ''
 })
 
+const tutoresDisponibles = ref([])
 const cargando = ref(false)
 const error = ref('')
 
-watch(() => props.show, (val) => {
+async function cargarTutores() {
+  try {
+    const res = await api.get('/api/tutores/disponibles')
+    tutoresDisponibles.value = res.data
+  } catch (e) {
+    console.error('Error cargando tutores', e)
+  }
+}
+
+watch(() => props.show, async (val) => {
   if (val) {
-    // Resetear formulario cuando se abre
+    // Resetear formulario
     form.value = {
       nombre: '',
-      curso: ''
+      curso: '',
+      id_tutor: ''
     }
     error.value = ''
+    
+    await cargarTutores()
   }
 })
 
@@ -37,6 +52,7 @@ async function crear() {
   error.value = ''
 
   try {
+    // Enviamos id_tutor junto con el resto
     const res = await api.post('/api/grados', form.value)
 
     emit('created', res.data)
@@ -90,6 +106,21 @@ async function crear() {
               <option value="2º">2º</option>
             </select>
           </div>
+
+          <div class="mb-3">
+            <label class="form-label">Tutor Asignado (Obligatorio)</label>
+            <BuscadorSelect 
+              v-model="form.id_tutor"
+              :options="tutoresDisponibles"
+              label-key="nombre_completo" 
+              value-key="id"
+              placeholder="Buscar tutor disponible..."
+            />
+            <small class="text-muted" v-if="tutoresDisponibles.length === 0">
+              No hay tutores libres disponibles.
+            </small>
+          </div>
+
         </div>
 
         <div class="modal-footer">

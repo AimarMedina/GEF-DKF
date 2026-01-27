@@ -19,9 +19,9 @@ class GradoSeeder extends Seeder
             ['id' => 6, 'Nombre' => 'Mecatrónica Industrial', 'Curso' => '2º', 'ID_Tutor' => 30006],
             ['id' => 7, 'Nombre' => 'Automoción', 'Curso' => '1º', 'ID_Tutor' => 30007],
             ['id' => 8, 'Nombre' => 'Automoción', 'Curso' => '2º', 'ID_Tutor' => 30008],
-            ['id' => 9, 'Nombre' => 'Administración y Finanzas', 'Curso' => '2º', 'ID_Tutor' => 30009],
-            ['id' => 10, 'Nombre' => 'Ciberseguridad (Especialización)', 'Curso' => '1º', 'ID_Tutor' => 30010],
-            ['id' => 11, 'Nombre' => 'Robótica Colaborativa (Especialización)', 'Curso' => '1º', 'ID_Tutor' => 30011],
+            ['id' => 9, 'Nombre' => 'Administración y Finanzas', 'Curso' => '2º', 'ID_Tutor' => null],
+            ['id' => 10, 'Nombre' => 'Ciberseguridad (Especialización)', 'Curso' => '1º', 'ID_Tutor' => null],
+            ['id' => 11, 'Nombre' => 'Robótica Colaborativa (Especialización)', 'Curso' => '1º', 'ID_Tutor' => null],
         ]);
     }
 }

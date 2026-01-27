@@ -54,9 +54,17 @@ class GradoController extends Controller
             'curso.max' => 'El curso no puede superar los 50 caracteres'
         ]);
 
-        $grado = Grado::create([
+        if ($request->id_tutor) {
+            $existe = DB::table('grado')->where('ID_Tutor', $request->id_tutor)->exists();
+            if ($existe) {
+                return response()->json(['message' => 'Este tutor ya tiene un grado asignado.'], 422);
+            }
+        }
+
+       $grado = Grado::create([
             'Nombre' => $request->nombre,
-            'Curso' => $request->curso
+            'Curso' => $request->curso,
+            'ID_Tutor' => $request->id_tutor 
         ]);
 
         return response()->json([
